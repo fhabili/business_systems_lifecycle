@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "postgres-personal": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgres://postgres:040393@localhost:5432/liquidity_risk"
+      ]
+    }
+  }
+}

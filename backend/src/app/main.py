@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.api.routes import health
+from app.api.routes import health, summary, lcr, nsfr, quality, lineage as lineage_route
 
 app = FastAPI(
     title=settings.app_name,
@@ -19,7 +19,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(health.router, prefix="/api/v1", tags=["Health"])
+app.include_router(health.router,        prefix="/api/v1", tags=["Health"])
+app.include_router(summary.router,       prefix="/api/v1", tags=["Summary"])
+app.include_router(lcr.router,           prefix="/api/v1", tags=["LCR"])
+app.include_router(nsfr.router,          prefix="/api/v1", tags=["NSFR"])
+app.include_router(quality.router,       prefix="/api/v1", tags=["Quality"])
+app.include_router(lineage_route.router, prefix="/api/v1", tags=["Lineage"])
 
 
 @app.get("/")

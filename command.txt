@@ -1,0 +1,5 @@
+Komanda per te startuar backend-in: fillon me (cd backend)
+uv run uvicorn app.main:app --app-dir src --host 127.0.0.1 --port 8080 
+
+Komanda per te startuar frontend-in: fillon me (cd frontend)
+npm run dev
