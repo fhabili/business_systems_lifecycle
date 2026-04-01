@@ -11,5 +11,10 @@ class Settings(BaseSettings):
     app_name: str = "Liquidity Risk Reporting System"
     debug: bool = False
 
+    # AI
+    anthropic_api_key: str = ""
+    gemini_api_key: str = ""
+    groq_api_key: str = ""
+
 
 settings = Settings()

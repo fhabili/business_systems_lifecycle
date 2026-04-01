@@ -52,17 +52,35 @@ export interface NsfrResponse {
   max_nsfr: number | null;
 }
 
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 const BASE = '/api/v1';
 
-async function apiFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`);
-  if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
+async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, init);
+  if (!res.ok) {
+    let detail = `${res.status}: ${res.statusText}`;
+    try {
+      const body = await res.json();
+      if (body?.detail) detail = body.detail;
+    } catch { /* ignore */ }
+    throw new Error(detail);
+  }
   return res.json() as Promise<T>;
 }
 
 export const fetchSummary = () => apiFetch<SummaryResponse>('/summary');
 export const fetchLcr     = () => apiFetch<LcrResponse>('/lcr');
 export const fetchNsfr    = () => apiFetch<NsfrResponse>('/nsfr');
+export const fetchChat    = (message: string, history: ChatMessage[]) =>
+  apiFetch<{ reply: string }>('/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, history }),
+  });
 
 /** Convert an ISO date string "YYYY-MM-DD" to a quarter label like "2024 Q3". */
 export function dateToQuarter(iso: string): string {
