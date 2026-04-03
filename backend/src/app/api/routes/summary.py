@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.models.lineage import PipelineRun
 from app.models.warehouse import BankLcr, BankNsfr, SupervisorySeries
-from app.schemas.summary import LcrTrendPoint, SummaryResponse
+from app.schemas.summary import LcrTrendPoint, NsfrTrendPoint, SummaryResponse
 
 router = APIRouter()
 
@@ -48,6 +48,19 @@ async def get_summary(db: AsyncSession = Depends(get_db)):
         if row[0] and row[1] is not None
     ]
 
+    # NSFR trend: average NSFR by period from supervisory_series (metric_name = "NSFR")
+    nsfr_trend_res = await db.execute(
+        select(SupervisorySeries.ref_period, func.avg(SupervisorySeries.obs_value))
+        .where(SupervisorySeries.metric_name == "NSFR")
+        .group_by(SupervisorySeries.ref_period)
+        .order_by(SupervisorySeries.ref_period)
+    )
+    nsfr_trend = [
+        NsfrTrendPoint(period=row[0], nsfr_ratio=round(row[1], 1))
+        for row in nsfr_trend_res
+        if row[0] and row[1] is not None
+    ]
+
     # Latest pipeline run
     run_res = await db.execute(
         select(PipelineRun).order_by(PipelineRun.started_at.desc()).limit(1)
@@ -69,10 +82,13 @@ async def get_summary(db: AsyncSession = Depends(get_db)):
     return SummaryResponse(
         lcr_ratio=round(avg_lcr, 1) if avg_lcr is not None else None,
         nsfr_ratio=round(avg_nsfr, 1) if avg_nsfr is not None else None,
+        # Validation pipeline (run_all_rules) is not yet executed against the warehouse.
+        # Return None so the frontend falls back to its statically-computed GLOBAL_QUALITY_SCORE.
         data_quality_score=None,
         as_of_date=str(as_of_date) if as_of_date else None,
         last_pipeline_run=latest_run.started_at if latest_run else None,
         lcr_trend=lcr_trend,
+        nsfr_trend=nsfr_trend,
         active_alerts=alerts,
     )
 

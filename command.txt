@@ -1,5 +1,14 @@
 Komanda per te startuar backend-in: fillon me (cd backend)
 uv run uvicorn app.main:app --app-dir src --host 127.0.0.1 --port 8080 
 
+netstat -ano | findstr :8080
+Stop-Process -Id (Get-NetTCPConnection -LocalPort 8080).OwningProcess -Force
+
 Komanda per te startuar frontend-in: fillon me (cd frontend)
 npm run dev
+cmd /c "npm run dev"
+
+GitHub:
+git add . — Stage all modified files
+git commit -m — Create a commit with your message
+git push — Push to the main branch on GitHub

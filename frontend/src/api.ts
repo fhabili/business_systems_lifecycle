@@ -8,6 +8,11 @@ export interface LcrTrendPoint {
   lcr_ratio: number;   // percentage
 }
 
+export interface NsfrTrendPoint {
+  period: string;
+  nsfr_ratio: number;  // percentage
+}
+
 export interface SummaryResponse {
   lcr_ratio: number | null;
   nsfr_ratio: number | null;
@@ -15,6 +20,7 @@ export interface SummaryResponse {
   as_of_date: string | null;
   last_pipeline_run: string | null;
   lcr_trend: LcrTrendPoint[];
+  nsfr_trend: NsfrTrendPoint[];
   active_alerts: string[];
 }
 
