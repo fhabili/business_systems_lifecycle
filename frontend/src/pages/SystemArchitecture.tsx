@@ -28,7 +28,7 @@ const TECH_STACK = [
     items: ['PostgreSQL 16', 'SQLAlchemy', 'Medallion Architecture', 'BCBS 239 Compliant Lineage'],
   },
   {
-    category: 'AI / LLM',
+    category: 'AI Layer',
     accent: '#D97706',
     bg: 'bg-amber-50',
     border: 'border-amber-100',
@@ -43,7 +43,7 @@ export default function SystemArchitecture() {
       <div>
         <h1 className="text-2xl font-bold" style={{ color: '#1B2A4A' }}>System Architecture</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Record-to-Report lifecycle across three interconnected system layers
+          Record-to-Report lifecycle across three connected system layers
         </p>
       </div>
 
@@ -51,7 +51,7 @@ export default function SystemArchitecture() {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0 text-gray-500"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
         <p className="text-sm text-slate-600 leading-relaxed">
           <span className="font-semibold">About this page: </span>
-          This page documents the end-to-end system design behind the dashboard. The Transaction Layer simulates ERP ledger origination and cash flow events. The Control Layer applies automated financial close validation rules, blocking any data that fails quality checks from reaching the warehouse. The Reporting Layer consumes only clean validated data to compute and display regulatory metrics.
+          This view explains how the platform turns source data into governed regulatory metrics. The Transaction Layer captures financial events, the Control Layer applies validation rules, and the Reporting Layer delivers trusted output to the dashboard.
         </p>
       </div>
 
@@ -62,7 +62,7 @@ export default function SystemArchitecture() {
           <div className="flex-1 w-full rounded-lg border border-gray-200 border-t-4 border-t-blue-500 bg-white p-6">
             <p className="text-xs font-bold uppercase tracking-widest text-blue-500 mb-2">Transaction Layer</p>
             <h3 className="text-sm font-bold text-gray-900 mb-2">ERP Origination</h3>
-            <p className="text-sm text-gray-500">Captures business events as auditable journal entries</p>
+            <p className="text-sm text-gray-500">Captures financial events as auditable journal entries</p>
           </div>
 
           {/* Arrow — Responsive */}
@@ -79,7 +79,7 @@ export default function SystemArchitecture() {
           <div className="flex-1 w-full rounded-lg border border-gray-200 border-t-4 border-t-amber-500 bg-white p-6">
             <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">Control Layer</p>
             <h3 className="text-sm font-bold text-gray-900 mb-2">Close Validation</h3>
-            <p className="text-sm text-gray-500">Blocks invalid data before it reaches the warehouse</p>
+            <p className="text-sm text-gray-500">Applies validation rules before data reaches reporting</p>
           </div>
 
           {/* Arrow — Responsive */}
@@ -96,7 +96,7 @@ export default function SystemArchitecture() {
           <div className="flex-1 w-full rounded-lg border border-gray-200 border-t-4 border-t-emerald-500 bg-white p-6">
             <p className="text-xs font-bold uppercase tracking-widest text-emerald-500 mb-2">Reporting Layer</p>
             <h3 className="text-sm font-bold text-gray-900 mb-2">Regulatory Reporting</h3>
-            <p className="text-sm text-gray-500">Delivers validated Basel III metrics with full lineage</p>
+            <p className="text-sm text-gray-500">Delivers trusted Basel III metrics with full lineage</p>
           </div>
         </div>
       </div>

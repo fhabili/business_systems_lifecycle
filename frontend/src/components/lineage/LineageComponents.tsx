@@ -214,11 +214,11 @@ export function DataFlowDiagram() {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6">
       <h2 className="text-base font-semibold text-slate-900 mb-1">Data Flow Overview</h2>
-      <p className="text-xs text-slate-500 mb-5">Regulatory source data moves through five structured layers, from raw ingestion to validated dashboard metrics.</p>
+      <p className="text-xs text-slate-500 mb-5">Every regulatory metric follows the same governed path: from authoritative source, through preservation and regulatory logic, to controlled delivery and final reporting output.</p>
       <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-stretch mb-8 overflow-x-auto">
         {/* Node 1: Source Data */}
         <div className="w-full md:w-auto flex-1 rounded-xl border border-slate-200 border-t-4 border-t-amber-500 bg-white p-4 flex flex-col justify-center text-center">
-          <p className="text-xs font-bold text-slate-900">Source Data</p>
+          <p className="text-xs font-bold text-slate-900">Source</p>
           <p className="text-[10px] text-slate-500">ECB and Bundesbank</p>
         </div>
 
@@ -234,8 +234,8 @@ export function DataFlowDiagram() {
 
         {/* Node 2: Data Archive */}
         <div className="w-full md:w-auto flex-1 rounded-xl border border-slate-200 border-t-4 border-t-amber-500 bg-white p-4 flex flex-col justify-center text-center">
-          <p className="text-xs font-bold text-slate-900">Data Archive</p>
-          <p className="text-[10px] text-slate-500">Immutable Storage</p>
+          <p className="text-xs font-bold text-slate-900">Preservation</p>
+          <p className="text-[10px] text-slate-500">Immutable Record</p>
         </div>
 
         {/* Arrow — Responsive */}
@@ -250,8 +250,8 @@ export function DataFlowDiagram() {
 
         {/* Node 3: Data Warehouse */}
         <div className="w-full md:w-auto flex-1 rounded-xl border border-slate-200 border-t-4 border-t-amber-500 bg-white p-4 flex flex-col justify-center text-center">
-          <p className="text-xs font-bold text-slate-900">Data Warehouse</p>
-          <p className="text-[10px] text-slate-500">Validated and Structured</p>
+          <p className="text-xs font-bold text-slate-900">Calculation</p>
+          <p className="text-[10px] text-slate-500">Regulatory Logic Applied</p>
         </div>
 
         {/* Arrow — Responsive */}
@@ -266,8 +266,8 @@ export function DataFlowDiagram() {
 
         {/* Node 4: Data Service */}
         <div className="w-full md:w-auto flex-1 rounded-xl border border-slate-200 border-t-4 border-t-amber-500 bg-white p-4 flex flex-col justify-center text-center">
-          <p className="text-xs font-bold text-slate-900">Data Service</p>
-          <p className="text-[10px] text-slate-500">Metrics Delivery</p>
+          <p className="text-xs font-bold text-slate-900">Delivery</p>
+          <p className="text-[10px] text-slate-500">Governed Metrics</p>
         </div>
 
         {/* Arrow — Responsive */}
@@ -282,7 +282,7 @@ export function DataFlowDiagram() {
 
         {/* Node 5: Dashboard */}
         <div className="w-full md:w-auto flex-1 rounded-xl border border-slate-200 border-t-4 border-t-amber-500 bg-white p-4 flex flex-col justify-center text-center">
-          <p className="text-xs font-bold text-slate-900">Dashboard</p>
+          <p className="text-xs font-bold text-slate-900">Reporting</p>
           <p className="text-[10px] text-slate-500">Executive Terminal</p>
         </div>
       </div>
@@ -310,7 +310,7 @@ export function TracePanel({ onTrace }: { onTrace: (metric: Metric, quarter: str
     <div className="rounded-xl border border-slate-200 bg-white p-6 space-y-5">
       <div>
         <h2 className="text-lg font-bold text-slate-900">Trace a Number</h2>
-        <p className="text-sm text-slate-500 mt-1">Pick any metric and quarter to see the full audit trail from source file to dashboard figure.</p>
+        <p className="text-sm text-slate-500 mt-1">Select a metric and reporting period to trace how the final figure was sourced, validated, transformed, and delivered to the dashboard.</p>
       </div>
       <div className="flex flex-wrap gap-3">
         <div className="flex flex-col gap-1">
@@ -337,7 +337,7 @@ export function TracePanel({ onTrace }: { onTrace: (metric: Metric, quarter: str
       </div>
       {traced && (
         <div className="pt-2">
-          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-4">Audit Timeline: {metric} · {quarter}</p>
+          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-4">Lineage Trace: {metric} · {quarter}</p>
           <div className="relative pl-2">
             {/* Vertical connector line */}
             <div className="absolute left-[19px] top-4 bottom-4 w-px bg-slate-200" />
@@ -356,7 +356,7 @@ export function TracePanel({ onTrace }: { onTrace: (metric: Metric, quarter: str
                       <div className="mt-2.5 rounded border border-amber-200 bg-white px-3 py-2">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-amber-500 mb-0.5">Regulatory Mapping</p>
                         <p className="text-xs text-slate-500 leading-relaxed">
-                          Source fields aligned to Basel III metric definitions before ingestion.
+                          Source fields are aligned to the internal Basel III metric structure before entering the governed reporting pipeline.
                         </p>
                       </div>
                     )}

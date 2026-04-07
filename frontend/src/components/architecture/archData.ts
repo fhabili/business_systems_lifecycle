@@ -17,7 +17,7 @@ export const REPOS: RepoBox[] = [
     title: 'ERP Ledger Posting Simulation',
     subtitle: 'Record-to-Report — Origin',
     description:
-      'Simulates the accounting origin of data. System of record for journal entries and cash flow events.',
+      'Simulates the accounting origin of data and acts as the system of record for journal entries and cash flow events.',
     tech: [
       { label: 'Python', color: 'bg-blue-100 text-blue-700' },
       { label: 'PostgreSQL', color: 'bg-indigo-100 text-indigo-700' },
@@ -34,7 +34,7 @@ export const REPOS: RepoBox[] = [
     title: 'Financial Close Validation Engine',
     subtitle: 'Record-to-Report — Controls',
     description:
-      'Automates financial close controls. Failures block data promotion, ensuring only validated figures reach the warehouse.',
+      'Applies financial close controls and blocks invalid data from progressing into the reporting layer.',
     tech: [
       { label: 'Python', color: 'bg-blue-100 text-blue-700' },
       { label: 'FastAPI', color: 'bg-emerald-100 text-emerald-700' },
@@ -49,10 +49,10 @@ export const REPOS: RepoBox[] = [
   },
   {
     layer: 'Reporting Layer',
-    title: 'Liquidity Risk Reporting Terminal',
+    title: 'Regsys Analytics Platform',
     subtitle: 'Record-to-Report — Output',
     description:
-      'Computes LCR/NSFR ratios in real-time with a full provenance audit trail for Risk Managers and Regulators.',
+      'Delivers validated LCR and NSFR metrics with full lineage from source to dashboard.',
     tech: [
       { label: 'React', color: 'bg-sky-100 text-sky-700' },
       { label: 'TypeScript', color: 'bg-blue-100 text-blue-700' },

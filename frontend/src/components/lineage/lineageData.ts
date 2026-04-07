@@ -124,36 +124,38 @@ export function buildTrace(metric: Metric, quarter: string): TraceStep[] {
 
   return [
     {
-      layer: 'Source Data Extraction',
+      layer: 'Authoritative Source',
       color: 'border-slate-200',
       icon: 'SRC',
-      detail: isLcr
-        ? `LCR ratio for the selected quarter retrieved from ECB Supervisory Banking Statistics, covering Significant Institutions under the Single Supervisory Mechanism.`
-        : `NSFR ratio for the selected quarter retrieved from ECB Supervisory Banking Statistics, covering Significant Institutions under the Single Supervisory Mechanism.`
+      detail: `${metric} for the selected quarter originates from ECB Supervisory Banking Statistics, representing supervisory data reported by Significant Institutions under the Single Supervisory Mechanism.`
     },
     {
-      layer: 'Raw Data Archive',
+      layer: 'Immutable Source Record',
       color: 'border-slate-200',
       icon: 'STG',
-      detail: `Source data stored without modification. Every record is timestamped and retained for 7 years to satisfy regulatory audit requirements.`,
+      detail: `The source dataset is stored without modification and timestamped on ingestion, preserving a permanent reference point for audit, replay, and control review.`,
+
     },
     {
-      layer: 'Regulatory Transformation',
+      layer: 'Regulatory Calculation Layer',
       color: 'border-slate-200',
       icon: 'WH',
-      detail: `Raw figures converted into LCR components: HQLA buffer and net cash outflows, applying Basel III run-off rates as required under CRR Article 416/422.`,
+      detail: `Source values are transformed into LCR components such as HQLA and net cash outflows, applying Basel III classification and run-off logic to produce a compliant metric.`,
+
     },
     {
-      layer: 'Data Service Layer',
+      layer: 'Controlled Metric Delivery',
       color: 'border-slate-200',
       icon: 'API',
-      detail: `Validated metrics made available to the dashboard through a structured data service. Only warehouse-approved figures are served.`,
+      detail: `Only validated and approved metrics are exposed to downstream consumers, ensuring the dashboard receives governed figures rather than raw or intermediate outputs.`,
+
     },
     {
-      layer: 'Dashboard Display',
+      layer: 'Reported Figure',
       color: 'border-slate-200',
       icon: 'UI',
-      detail: `Final validated figure displayed on the Executive Terminal. The Stress Test Simulator can apply a funding shock to model a hypothetical scenario — the underlying warehouse record remains unchanged.`,
+      detail: `The final figure is presented in the Executive Terminal as the governed reporting output. Scenario tools may model hypothetical impacts, but the traced source-backed metric remains unchanged.`,
+
     },
   ]
 }
