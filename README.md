@@ -10,9 +10,9 @@ Live: [regsys-analytics.org](https://regsys-analytics.org)
 
 ## What This System Demonstrates
 
-This project is a BSA portfolio piece demonstrating end-to-end systems thinking across the full Record-to-Report lifecycle. It ingests real public regulatory data, transforms it through a validated pipeline, and presents auditable Basel III metrics in an interactive dashboard.
+This platform demonstrates end-to-end systems thinking across the full Record-to-Report lifecycle, from source ingestion and validation to governed regulatory reporting. It ingests real public regulatory data, transforms it through a controlled pipeline, and presents auditable Basel III metrics in an interactive dashboard.
 
-Built to bridge Finance and IT — the architecture decisions, validation rules, and data model were designed from a regulatory reporting and liquidity risk perspective. The code was the output of those decisions, not the starting point.
+Built to bridge Finance and IT, the architecture decisions, validation rules, and data model were designed from a regulatory reporting and liquidity risk perspective. The code was the output of those decisions, not the starting point.
 
 ---
 
@@ -56,7 +56,7 @@ Applies financial close controls and blocks invalid data from progressing to rep
 
 **3. Reporting Layer — Regsys Analytics Platform**  
 Delivers validated LCR and NSFR metrics with full lineage from source to dashboard.  
-[github.com/fhabili/business_systems_lifecycle](https://github.com/fhabili/business_systems_lifecycle)
+[github.com/fhabili/regsys-analytics-platform](https://github.com/fhabili/regsys-analytics-platform)
 
 ---
 
