@@ -45,12 +45,16 @@ export function Sidebar({ open, onToggle, mobileModal = false }: SidebarProps) {
 
   return (
     <aside
-      className={`${mobileModal ? 'flex h-[100dvh]' : 'hidden md:flex'} flex-col shrink-0 min-h-0 border-r border-gray-200 bg-white transition-[width] duration-300 ease-in-out overflow-hidden`}
-      style={{ width: open ? 320 : 48 }}
+      className={
+        mobileModal
+          ? 'fixed inset-0 z-50 flex flex-col bg-white'
+          : 'hidden md:flex flex-col shrink-0 min-h-0 border-r border-gray-200 bg-white transition-[width] duration-300 ease-in-out overflow-hidden'
+      }
+      style={mobileModal ? undefined : { width: open ? 320 : 48 }}
     >
       {open ? (
         /* ── Expanded panel ── */
-        <div className="flex flex-col h-full w-[320px]">
+        <div className={`flex flex-col h-full ${mobileModal ? 'w-full' : 'w-[320px]'}`}>
           {/* Header */}
           <div className="flex items-center justify-between px-4 h-12 border-b border-gray-100 shrink-0">
             <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>AI Assistant</p>
@@ -78,7 +82,7 @@ export function Sidebar({ open, onToggle, mobileModal = false }: SidebarProps) {
           </div>
 
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3">
+          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto px-4 py-4 pb-6 space-y-3">
             {messages.length === 0 && !sending ? (
               <div>
                 <p className="text-xs text-gray-400 mb-3 leading-relaxed">
@@ -121,7 +125,7 @@ export function Sidebar({ open, onToggle, mobileModal = false }: SidebarProps) {
           </div>
 
           {/* Input */}
-          <div className="px-3 py-3 border-t border-gray-100 shrink-0">
+          <div className="px-3 py-3 border-t border-gray-100 shrink-0" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
             <div className="flex gap-2">
               <input
                 value={input}
