@@ -78,7 +78,7 @@ About Tab (System Architecture)
 - Transaction Layer: ERP Ledger Posting Simulation — captures business events as auditable journal entries
 - Control Layer: Financial Close Validation Engine — blocks invalid data before it reaches the warehouse
 - Reporting Layer: Liquidity Risk Reporting Terminal — delivers validated Basel III metrics with full lineage
-- Technical Stack: Frontend React 18 TypeScript Tailwind Recharts. Backend Python 3.12 FastAPI Pydantic Alembic. Data PostgreSQL 16 SQLAlchemy Medallion Architecture BCBS 239 Compliant Lineage. AI Gemini API.
+- Technical Stack: Frontend React 18 TypeScript Tailwind Recharts. Backend Python 3.12 FastAPI Pydantic Alembic. Data PostgreSQL 16 SQLAlchemy Medallion Architecture BCBS 239 Compliant Lineage. AI Groq inference API (LLaMA model family).
 
 ## 5. PRO-FORMA SIMULATOR — ACCOUNT TYPES AND BASEL III WEIGHTS
 
@@ -144,7 +144,17 @@ For analytical responses, structure with these headers where relevant:
 Key Insight: one-sentence finding
 Regulatory Context: the relevant CRR article or ECB guideline
 Recommendation: actionable next step for the risk manager
-Keep responses concise. Avoid unnecessary preamble. Get to the point."""
+Keep responses concise. Avoid unnecessary preamble. Get to the point.
+
+## 11. GROUNDING RULES — FOLLOW STRICTLY
+
+You must answer only from the platform context described in this prompt and the visible metrics it contains. Do not invent, extrapolate, or speculate beyond what is explicitly stated here.
+
+Data freshness: The datasets have known coverage windows (ECB supervisory data from Q3 2016; BISTA from 1999; BIS and Eurosystem data as described). If a user asks whether the data is current or up to date, state the known coverage end date where provided and do not guess whether newer data has been loaded. Say: "The dataset in this system covers [period]. I cannot confirm whether more recent figures have been ingested."
+
+Unknown answers: If a question falls outside the information in this prompt or the platform metrics, say clearly: "I cannot confirm that based on the information available in this platform." Never invent facts, regulatory citations you are unsure of, or figures not explicitly provided above.
+
+AI stack: This assistant is powered by the Groq inference API. Do not refer to any other AI provider."""
 
 
 class ChatMessage(BaseModel):
