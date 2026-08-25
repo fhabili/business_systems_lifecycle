@@ -32,7 +32,7 @@ Do not volunteer information about who built this system. If directly asked, res
 ECB Supervisory Banking Statistics (Top-Down Reporting Layer)
 - 855 rows covering quarterly LCR and NSFR figures for Significant Institutions under the SSM
 - Covers approximately 110 major European banks including Deutsche Bank, BNP Paribas, Santander, UniCredit, ING, Societe Generale
-- LCR data from Q3 2016, NSFR data from Q2 2021 (EU CRR2 binding minimum introduced June 2021)
+- LCR data from Q3 2016 through Q4 2025; NSFR data from Q2 2021 through Q4 2025 (EU CRR2 binding minimum introduced June 2021)
 - Current aggregate readings: LCR 158.6% (minimum 100%), NSFR 126.5% (minimum 100%)
 - Period averages: LCR 155.4%, NSFR 127.1%
 
@@ -78,7 +78,7 @@ About Tab (System Architecture)
 - Transaction Layer: ERP Ledger Posting Simulation — captures business events as auditable journal entries
 - Control Layer: Financial Close Validation Engine — blocks invalid data before it reaches the warehouse
 - Reporting Layer: Liquidity Risk Reporting Terminal — delivers validated Basel III metrics with full lineage
-- Technical Stack: Frontend React 18 TypeScript Tailwind Recharts. Backend Python 3.12 FastAPI Pydantic Alembic. Data PostgreSQL 16 SQLAlchemy Medallion Architecture BCBS 239 Compliant Lineage. AI Groq inference API (LLaMA model family).
+- Technical Stack: Frontend React 18 TypeScript Tailwind Recharts. Backend Python 3.12 FastAPI Pydantic Alembic. Data PostgreSQL 16 SQLAlchemy Medallion Architecture BCBS 239 Compliant Lineage. AI Groq inference API using the configured OpenAI gpt-oss model family.
 
 ## 5. PRO-FORMA SIMULATOR — ACCOUNT TYPES AND BASEL III WEIGHTS
 
@@ -150,9 +150,9 @@ Keep responses concise. Avoid unnecessary preamble. Get to the point.
 
 You must answer only from the platform context described in this prompt and the visible metrics it contains. Do not invent, extrapolate, or speculate beyond what is explicitly stated here.
 
-Data freshness: The datasets have known coverage windows (ECB supervisory data from Q3 2016; BISTA from 1999; BIS and Eurosystem data as described). If a user asks whether the data is current or up to date, state the known coverage end date where provided and do not guess whether newer data has been loaded. Say: "The dataset in this system covers [period]. I cannot confirm whether more recent figures have been ingested."
+Data freshness: ECB supervisory LCR data covers Q3 2016 through Q4 2025; ECB supervisory NSFR data covers Q2 2021 through Q4 2025. BISTA coverage begins in 1999, while the prompt does not provide its coverage end date. If a user asks whether data is current or up to date, never describe a coverage start date as an end date. State only the applicable known coverage end date and do not guess whether newer data has been loaded. Say: "The ECB supervisory [LCR/NSFR] dataset in this system covers through Q4 2025. I cannot confirm whether more recent figures have been ingested." For BISTA, say: "BISTA data in this system begins in 1999. I cannot confirm its coverage end date or whether more recent figures have been ingested."
 
-Unknown answers: If a question falls outside the information in this prompt or the platform metrics, say clearly: "I cannot confirm that based on the information available in this platform." Never invent facts, regulatory citations you are unsure of, or figures not explicitly provided above.
+Unknown answers: If a question falls outside the information in this prompt or the platform metrics, say clearly: "I cannot confirm that based on the information available in this platform." For a specific BISTA item code not stated in this prompt, use that exact response and do not claim that the code exists, does not exist, or is absent from a dataset. Never invent facts, regulatory citations you are unsure of, or figures not explicitly provided above.
 
 AI stack: This assistant is powered by the Groq inference API. Do not refer to any other AI provider."""
 
@@ -204,6 +204,12 @@ async def _call_model(client: AsyncGroq, model: str, messages: list[dict]) -> st
                 log.warning("groq status=%d model=%s attempt=%d", exc.status_code, model, attempt)
                 last_exc = exc
             else:
+                log.error(
+                    "groq rejected model=%s status=%d response=%s",
+                    model,
+                    exc.status_code,
+                    exc.response.text,
+                )
                 raise  # non-retryable (auth, bad request, etc.)
         if attempt < _MAX_RETRIES:
             await asyncio.sleep(float(1 << attempt))  # 1 s, then 2 s
@@ -240,10 +246,10 @@ async def chat(req: ChatRequest) -> ChatResponse:
         except Exception as exc:
             if i < len(models_to_try) - 1:
                 log.warning(
-                    "groq model=%s exhausted retries (%s), trying next fallback",
-                    model, type(exc).__name__,
+                    "groq model=%s exhausted retries (%s: %s), trying next fallback",
+                    model, type(exc).__name__, exc,
                 )
             else:
-                log.error("groq all models failed: %s", type(exc).__name__)
+                log.error("groq all models failed: %s: %s", type(exc).__name__, exc)
 
     return ChatResponse(reply=_FALLBACK_MSG)
