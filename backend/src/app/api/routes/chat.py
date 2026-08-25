@@ -176,6 +176,29 @@ _FALLBACK_MSG = "The AI assistant is temporarily under heavy load. Please try ag
 _RETRYABLE_HTTP: frozenset[int] = frozenset({429, 500, 502, 503, 504})
 _MAX_RETRIES = 2
 _REQUEST_TIMEOUT = 25.0
+_DECOMMISSIONED_MODELS: frozenset[str] = frozenset({"llama-3.1-8b-instant"})
+_REPLACEMENT_MODEL = "openai/gpt-oss-20b"
+
+
+def _resolve_models_to_try(primary: str, fallback_csv: str) -> list[str]:
+    """Build ordered model list, transparently replacing decommissioned models."""
+    models: list[str] = []
+    seen: set[str] = set()
+
+    for raw in [primary, *fallback_csv.split(",")]:
+        model = raw.strip()
+        if not model:
+            continue
+        if model in _DECOMMISSIONED_MODELS:
+            log.warning("groq model %s is decommissioned; using %s", model, _REPLACEMENT_MODEL)
+            model = _REPLACEMENT_MODEL
+        if model not in seen:
+            seen.add(model)
+            models.append(model)
+
+    if not models:
+        return [_REPLACEMENT_MODEL]
+    return models
 
 
 async def _call_model(client: AsyncGroq, model: str, messages: list[dict]) -> str:
@@ -223,13 +246,7 @@ async def chat(req: ChatRequest) -> ChatResponse:
         messages.append({"role": "assistant" if m.role == "assistant" else "user", "content": m.content})
     messages.append({"role": "user", "content": req.message})
 
-    primary = settings.groq_model
-    fallbacks = [
-        m.strip()
-        for m in settings.groq_fallback_models.split(",")
-        if m.strip() and m.strip() != primary
-    ]
-    models_to_try = [primary] + fallbacks
+    models_to_try = _resolve_models_to_try(settings.groq_model, settings.groq_fallback_models)
 
     for i, model in enumerate(models_to_try):
         try:

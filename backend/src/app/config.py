@@ -15,8 +15,8 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     gemini_api_key: str = ""
     groq_api_key: str = ""
-    groq_model: str = "llama3-8b-8192"
-    groq_fallback_models: str = "llama-3.1-8b-instant,llama3-8b-8192"
+    groq_model: str = "openai/gpt-oss-20b"
+    groq_fallback_models: str = "openai/gpt-oss-120b,llama3-8b-8192"
 
 
 settings = Settings()
